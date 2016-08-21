@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/mehdi-elhaij/3DprintCentre/issues"
   },
-  "homepage": "https://github.com/mehdi-elhaij/3DprintCentre#readme"
+  "homepage": "https://github.com/mehdi-elhaij/3DprintCentre#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "formidable": "^1.0.17"
+  }
 }
