@@ -38,3 +38,29 @@ app.post('/upload', function(req, res){
 var server = app.listen(port, function(){
 	console.log("Server listening on port " + port);
 });
+
+
+// get density for plastic used to print the object
+function getDensity(fillType){ // en g/cm3 (metric system is cool)
+	fillType = fillType.toString().toUpperCase();
+	switch(fillType){
+		case "ABS":
+			return 1.4;
+		case "PLA":
+			return 1.25;
+	}
+}
+
+function calculateWeight(fillLength, fillDiameter, fillType){ // en g
+	var fillLength = typeof fillLength !== 'undefined' ?  parseInt(fillLength) : 0;
+	var fillDiameter = typeof fillDiameter !== 'undefined' ?  parseInt(fillDiameter) : 0;
+	var fillType = typeof fillType !== 'undefined' ?  fillType : "ABS";
+
+	var fillradius = fillDiameter/2,
+		section = fillradius * fillradius * Math.PI,
+		volume = section * fillLength; // in mm3
+
+	var volumeCmCube = volume * 0.001; // convert volume to cm3
+	
+	return volumeCmCube * getDensity(fillType); // weight in g
+}
