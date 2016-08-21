@@ -1,0 +1,19 @@
+{
+  "name": "print-centre",
+  "version": "1.0.0",
+  "description": "Assani3.com 3d printing service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mehdi-elhaij/3DprintCentre.git"
+  },
+  "author": "Mehdi Elhaij",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mehdi-elhaij/3DprintCentre/issues"
+  },
+  "homepage": "https://github.com/mehdi-elhaij/3DprintCentre#readme"
+}
