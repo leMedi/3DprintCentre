@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Assani3 - 3D Printing Service</title>
+
+	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+	<style>
+		body{
+			width: 40vw;
+			margin: 10px auto;
+			text-align: center;
+		}
+
+		#file-input{display: none;}
+	</style>
+</head>
+<body>
+	<div class="page-header">
+		<h1>Assani3 3D Printing Center</h1>
+	</div>
+
+	<div class="progress">
+		<div class="progress-bar" role="progressbar"></div>
+	</div>
+	<button class="btn btn-lg  btn-primary upload-btn" type="button">Upload .STL</button>
+	
+	<input id="file-input" type="file" hidden>
+
+
+	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script>
+		var $uploadInput = $('#file-input'),
+			$progressBar = $(".progress-bar");
+
+		// reset progress bar
+		$('.upload-btn').on('click', function (){
+		    $uploadInput.click();
+		    $progressBar.text('0%');
+		    $progressBar.width('0%');
+		});
+
+
+		$uploadInput.on('change', function(){
+			var files = $(this).get(0).files;
+
+			if (files.length > 0){
+				var formData = new FormData();
+
+				formData.append('file', files[0], files[0].name);
+				$.ajax({
+					url: '/upload',
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function(data){
+						console.log(data);
+					},
+					xhr: function() {
+						// create an XMLHttpRequest
+						var xhr = new XMLHttpRequest();
+
+						xhr.upload.addEventListener('progress', function(evt) {
+
+							if (evt.lengthComputable) {
+								// calculate upload percentage
+								var percent = evt.loaded / evt.total;
+								percent = parseInt(percent * 100);
+
+								// update progress bar
+								$progressBar.text(percent + '%');
+								$progressBar.width(percent + '%');
+
+								if (percent === 100) {
+									$progressBar.html('Done');
+								}
+
+							}
+
+						}, false);
+
+						return xhr;
+					}
+				});
+			}
+		});
+	</script>
+
+</body>
+</html>
