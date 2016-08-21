@@ -7,6 +7,11 @@ var port = process.env.PORT || 3000;
 var originalFileName,
 	filePath;
 
+var slic3rPath = path.join(__dirname, "/Slic3r/slic3r-console.exe"); // for windows
+var gcoderPath = "gcoder.py";
+
+var configurationPath = "config.ini"; // static for now
+
 app.get('/', function(req, res){
 	res.sendFile(path.join(__dirname, 'views/index.html'));
 });
@@ -29,7 +34,15 @@ app.post('/upload', function(req, res){
 		filePath = path.join(form.uploadDir, Date.now() + ".stl"); //Genarate new path for file
 		fs.rename(files.file.path, filePath); //move file
 
-		res.end("done");	
+		runSlic3r(filePath,configurationPath,function(estimatedTime, estimatedLength){
+			console.log("Estimated time: " + estimatedTime);
+
+			var estimatedWeight = calculateWeight(estimatedLength, 1.75, "ABS");
+
+			console.log("Estimated Weight: " + estimatedWeight + " g");
+
+			res.end("Estimated time: " + estimatedTime + "<br/>" + "Estimated Weight: " + estimatedWeight + " g");
+		});	
 	});
 
 
@@ -39,6 +52,45 @@ var server = app.listen(port, function(){
 	console.log("Server listening on port " + port);
 });
 
+function runSlic3r(filePath,configuration,callback,error){
+	const exec = require('child_process').exec;
+
+	var gcodePath = filePath.slice(0, filePath.length - 3) + "gcode"; // generate path for .gcode file
+
+	// slic3r command: slic3r example.stl --load example.ini --output example.gcode 
+	var command = slic3rPath + " " + filePath + " --load " + configuration + " --output " + gcodePath; // silce .stl using slic3r
+
+	exec(command,function(error, stdout, stderr){
+		if (error) {
+			console.log("error runslicer");
+			console.log(error);
+			return;
+		}
+		runGcoder(gcodePath,callback); // send .gcode file to Gcoder.py
+	});
+}
+
+function runGcoder(filePath,callback,error){
+	const exec = require('child_process').exec;
+	var command = "python  " + gcodePath + " " + filePath;
+
+	exec(command,function(error, stdout, stderr){
+		if (error) {
+			console.log("error Gcoder");
+			console.log(error);
+			return;
+		}
+		parseGcoderOutput(stdout, callback); //parse gcoder.py output
+	});
+}
+
+function parseGcoderOutput(gcoderOutput, callback){
+	lines = gcoderOutput.split("\n");
+	var estimatedTime = lines[9].substr(20); // get estimated print time
+	var estimatedFilamentLength = lines[7].slice(3,lines[7].length-2); // get estimated filament to be used for printing object
+	
+	callback(estimatedTime, estimatedFilamentLength)
+}
 
 // get density for plastic used to print the object
 function getDensity(fillType){ // en g/cm3 (metric system is cool)
