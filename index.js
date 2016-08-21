@@ -4,6 +4,8 @@ var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 var port = process.env.PORT || 3000;
+var originalFileName,
+	filePath;
 
 app.get('/', function(req, res){
 	res.sendFile(path.join(__dirname, 'views/index.html'));
@@ -23,9 +25,9 @@ app.post('/upload', function(req, res){
 		}
 
 		// move file to 'upload' folder and give it a unique name
-		fileName  = files.file.name;
-		file_path = path.join(form.uploadDir, Date.now() + ".stl"); //Genarate new path for file
-		fs.rename(files.file.path, path.join(form.uploadDir, fileName)); //move file
+		originalFileName  = files.file.name;
+		filePath = path.join(form.uploadDir, Date.now() + ".stl"); //Genarate new path for file
+		fs.rename(files.file.path, filePath); //move file
 
 		res.end("done");	
 	});
