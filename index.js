@@ -5,6 +5,10 @@ var formidable = require('formidable');
 var fs = require('fs');
 var port = process.env.PORT || 3000;
 
+app.get('/', function(req, res){
+	res.sendFile(path.join(__dirname, 'views/index.html'));
+});
+
 app.post('/upload', function(req, res){
 	var form = new formidable.IncomingForm(); // manage incomming data with Formidable
 
@@ -27,4 +31,8 @@ app.post('/upload', function(req, res){
 	});
 
 
+});
+
+var server = app.listen(port, function(){
+	console.log("Server listening on port " + port);
 });
