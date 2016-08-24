@@ -72,7 +72,7 @@ function runSlic3r(filePath,configuration,callback,error){
 
 function runGcoder(filePath,callback,error){
 	const exec = require('child_process').exec;
-	var command = "python  " + gcodePath + " " + filePath;
+	var command = "python  " + gcoderPath + " " + filePath;
 
 	exec(command,function(error, stdout, stderr){
 		if (error) {
