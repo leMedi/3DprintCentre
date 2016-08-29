@@ -151,6 +151,9 @@
 		var $uploadInput = $('#file-input'),
 			$progressButton = $("#progressButton");
 
+		var $time = $("#time"),
+			$weight = $("$weight");
+
 
 		$progressButton.progressInitialize();
 		$progressButton.on('click', function (){
@@ -176,6 +179,9 @@
 						$progressButton.removeClass("blink_me");
 						data = JSON.parse(data);
 						console.log(data);
+
+						$time.html(obj.time);
+						$weight.html(data.weight + " g");
 					},
 					xhr: function() {
 						// create an XMLHttpRequest
