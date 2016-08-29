@@ -9,7 +9,7 @@
 
 	<style>
 		body{
-			width: 1vw;
+			/*width: 1vw;*/
 			margin: 10px 0;
 			text-align: center;
 		}
@@ -156,11 +156,12 @@
 	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script>
+	$(document).ready(function(){
 		var $uploadInput = $('#file-input'),
 			$progressButton = $("#progressButton");
 
 		var $time = $("#time"),
-			$weight = $("$weight"),
+			$weight = $("#weight"),
 			$dimension = $("#dimension"),
 			$surface = $("#surface");
 
@@ -224,7 +225,8 @@
 			}
 		});
 
-
+		});
+	
 		// ProgressButtons Jquery Plugin
 		// http://tutorialzine.com/2013/10/buttons-built-in-progress-meters/
 		(function($){
