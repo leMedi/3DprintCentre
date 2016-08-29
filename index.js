@@ -13,6 +13,7 @@ var gcoderPath = "gcoder.py";
 
 var configurationPath = "config.ini"; // static for now
 
+app.use(express.static('public'));
 app.get('/', function(req, res){
 	res.sendFile(path.join(__dirname, 'views/index.html'));
 });
