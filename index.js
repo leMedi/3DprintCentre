@@ -42,7 +42,11 @@ app.post('/upload', function(req, res){
 
 			console.log("Estimated Weight: " + estimatedWeight + " g");
 
-			res.end("Estimated time: " + estimatedTime + "<br/>" + "Estimated Weight: " + estimatedWeight + " g");
+			res.end(JSON.stringify({
+						time: estimatedTime,
+						weight: estimatedWeight
+					})
+			);
 		});	
 	});
 
