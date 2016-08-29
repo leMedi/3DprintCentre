@@ -35,7 +35,7 @@ app.post('/upload', function(req, res){
 		filePath = path.join(form.uploadDir, Date.now() + ".stl"); //Genarate new path for file
 		fs.rename(files.file.path, filePath); //move file
 
-		runSlic3r(filePath,configurationPath,function(estimatedTime, estimatedLength){
+		runSlic3r(filePath,configurationPath,function(estimatedTime, estimatedLength, Dimensions){
 			console.log("Estimated time: " + estimatedTime);
 
 			var estimatedWeight = calculateWeight(estimatedLength, 1.75, "ABS");
@@ -44,7 +44,9 @@ app.post('/upload', function(req, res){
 
 			res.end(JSON.stringify({
 						time: estimatedTime,
-						weight: estimatedWeight
+						weight: estimatedWeight,
+						surface: Math.ceil(Dimensions.X * Dimensions.Y),
+						dimension: Dimensions.X + " X " + Dimensions.Y + " X " + Dimensions.Z
 					})
 			);
 		});	
@@ -90,11 +92,21 @@ function runGcoder(filePath,callback,error){
 }
 
 function parseGcoderOutput(gcoderOutput, callback){
+	var Dimensions = {
+		X: 0,
+		Y: 0,
+		Z: 0
+	};
+
 	lines = gcoderOutput.split("\n");
+
 	var estimatedTime = lines[9].substr(20); // get estimated print time
 	var estimatedFilamentLength = lines[7].slice(3,lines[7].length-2); // get estimated filament to be used for printing object
-	
-	callback(estimatedTime, estimatedFilamentLength)
+	Dimensions.X = lines[3].slice(lines[3].indexOf("(")+1, lines[3].indexOf(")")); 
+	Dimensions.Y = lines[4].slice(lines[4].indexOf("(")+1, lines[4].indexOf(")")); 
+	Dimensions.Z = lines[5].slice(lines[5].indexOf("(")+1, lines[5].indexOf(")")); 
+
+	callback(estimatedTime, estimatedFilamentLength, Dimensions);
 }
 
 // get density for plastic used to print the object

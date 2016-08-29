@@ -122,7 +122,15 @@
 			<div class="col-md-6">
 				<div class="table-responsive">
 					<table class="table table-bordered">
-						<tbody class="">
+							<tbody class="">
+							<tr>
+								<th>Dimensions :</th>
+								<th id="dimension"></th>
+							</tr>
+							<tr>
+								<th>Surface Area :</th>
+								<th id="surface"></th>
+							</tr>
 							<tr>
 								<th>Estimated Print Time :</th>
 								<th id="time"></th>
@@ -152,7 +160,9 @@
 			$progressButton = $("#progressButton");
 
 		var $time = $("#time"),
-			$weight = $("$weight");
+			$weight = $("$weight"),
+			$dimension = $("#dimension"),
+			$surface = $("#surface");
 
 
 		$progressButton.progressInitialize();
@@ -180,8 +190,10 @@
 						data = JSON.parse(data);
 						console.log(data);
 
-						$time.html(obj.time);
+						$time.html(data.time);
 						$weight.html(data.weight + " g");
+						$dimension.html(data.dimension);
+						$surface.html(data.surface + "mm^2");
 					},
 					xhr: function() {
 						// create an XMLHttpRequest
