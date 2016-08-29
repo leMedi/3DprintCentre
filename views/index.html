@@ -9,8 +9,8 @@
 
 	<style>
 		body{
-			width: 40vw;
-			margin: 10px auto;
+			width: 1vw;
+			margin: 10px 0;
 			text-align: center;
 		}
 		
@@ -114,13 +114,35 @@
 	</style>
 </head>
 <body>
-	<div class="page-header">
-		<h1>Assani3 3D Printing Center</h1>
+
+	<div class="fluid-container">
+		<a id="progressButton" href="#" class="progress-button">Fichier .STL</a>
+		<input id="file-input" type="file" hidden>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<tbody class="">
+							<tr>
+								<th>Estimated Print Time :</th>
+								<th id="time"></th>
+							</tr>
+							<tr>
+								<th>Estimated Weight :</th>
+								<th id="weight"></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>				
+			</div>
+			<div class="col-md-6">
+			</div>
+		</div>
 	</div>
 
-	<a id="progressButton" href="#" class="progress-button">Fichier .STL</a>
+	
 
-	<input id="file-input" type="file" hidden>
+	
 
 
 	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
