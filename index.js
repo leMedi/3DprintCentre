@@ -8,6 +8,7 @@ var originalFileName,
 	filePath;
 
 var slic3rPath = path.join(__dirname, "/Slic3r/slic3r-console.exe"); // for windows
+// var slic3rPath = path.join(__dirname, "./Slic3r/bin/slic3r"); // for linux
 var gcoderPath = "gcoder.py";
 
 var configurationPath = "config.ini"; // static for now
